@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Apartment Price Prediction</title>
+</head>
+<body>
+    <div class="work">
+        <div class="container">
+            <h1>Apartment Price Prediction</h1>
+            <form action="/predict" method="post">
+                
+                <label for="surface">Surface (m²):</label>
+                <input type="number" name="surface(m²)" required>
+                
+                <label for="chambres">rooms:</label>
+                <input type="number" name="chambres" required>
+    
+                <label for="pieces">pieces:</label>
+                <input type="number" name="pieces" required>
+    
+                <label for="salles de bains">bathrooms:</label>
+                <input type="number" name="salles de bains" required>
+    
+                <label for="etage">stage:</label>
+                <input type="number" name="etage" required>
+    
+                <label for="state">Choose the state of the apartment:</label>
+                <select id="state" name="etat">
+                    <option value="Nouveau">Nouveau</option>
+                    <option value="Bon état">Bon état</option>
+                    <option value="À rénover">À rénover</option>
+                </select>
+    
+                <label for="ageRange">Choose an age range:</label>
+                <select id="ageRange" name="ans">
+                  <option value="5-10 years">5-10 years</option>
+                  <option value="10-20 years">10-20 years</option>
+                  <option value="30-50 years">30-50 years</option>
+                  <option value="1-5 years">1-5 years</option>
+                  <option value="20-30 years">20-30 years</option>
+                  <option value="Over 100 years">Over 100 years</option>
+                  <option value="50-70 years">50-70 years</option>
+                  <option value="70-100 years">70-100 years</option>
+                </select>
+    
+                <label for="city">Choose the city:</label>
+                <select id="city" name="ville">
+                    <option value="Tétouan">Tétouan</option>
+                    <option value="Ifran">Ifran</option>
+                    <option value="Mohammedia">Mohammedia</option>
+                    <option value="Rabat">Rabat</option>
+                    <option value="Marrakech">Marrakech</option>
+                    <option value="Tanger">Tanger</option>
+                    <option value="Casablanca">Casablanca</option>
+                    <option value="Al Hoceima">Al Hoceima</option>
+                    <option value="Agadir">Agadir</option>
+                    <option value="Ahfir">Ahfir</option>
+                    <option value="Oujda">Oujda</option>
+                    <option value="Nador">Nador</option>
+                    <option value="Taghazout">Taghazout</option>
+                    <option value="Saïdia">Saïdia</option>
+                    <option value="Essaouira">Essaouira</option>
+                    <option value="Béni Mellal">Béni Mellal</option>
+                    <option value="Khouribga">Khouribga</option>
+                    <option value="Ksarel-Kébir">Ksarel-Kébir</option>
+                  
+                </select>
+    
+                <label for="generalFeatures">Select general features:</label>
+                <select id="generalFeatures"  multiple>
+                  <option value="climatisation">Climatisation</option>
+                  <option value="salon européen">Salon Européen</option>
+                  <option value="Cheminée">Cheminée</option>
+                  <option value="sécurité">Sécurité</option>
+                  <option value="four">Four</option>
+                  <option value="cuisine équipée">Cuisine équipée</option>
+                  <option value="salon marocain">Salon Marocain</option>
+                  <option value="façade extérieure">Façade Extérieure</option>
+                  <option value="ascenseur">Ascenseur</option>
+                  <option value="concierge">Concierge</option>
+                  <option value="garage">Garage</option>
+                  <option value="terrasse">Terrasse</option>
+                  <option value="jardin">Jardin</option>
+                </select>
+                <!-- ... (list that collect features) ... -->
+                <ul id="selectedFeature" name="selectedFeature"></ul>
+                <input type="hidden" id="selectedFeatureInput" name="autre">
+                <button type="submit">Predict</button>
+            </form>
+    
+        </div>
+    {% if prediction %}
+    <div class="card">
+   <div class="result-card">
+       <h2>Prediction Result</h2>
+       <p>predicted price is approximately: <b><p style="color: #ff6600;">{{ prediction }} DHs</p></b></p>
+       <p>You can visit a similar apartment:</p>
+       
+       <a href="{{Article_link}}">
+           <div class="recommendation-card">
+               <img src="{{similar_apartment_link}}" alt="Recommended House" class='img'>
+               <p style="color:#ff6600"><b>{{price}}s</b></p>
+           </div>
+       </a>
+
+   </div>
+</div>
+
+
+{% endif %}
+
+            <script>
+                const selectElement=document.getElementById('generalFeatures');
+                const selectListElement =document.getElementById('selectedFeature');
+                const selectedFeatureInput = document.getElementById('selectedFeatureInput');
+
+                selectElement.addEventListener("change",(event) =>{
+                    
+                    //convert to Array
+                    const selectedOptionsArray =Array.from(selectElement.selectedOptions);
+                    selectListElement.innerHTML='';
+
+                    
+                    let selectedValues = [];
+
+                    selectedOptionsArray.forEach((option) =>{
+                        const  listItem =document.createElement('li');
+                        listItem.textContent =option.textContent;
+                        selectListElement.appendChild(listItem);
+
+                        // Ajouter la valeur à la variable
+                        selectedValues.push(option.value);
+                    });
+                    selectedFeatureInput.value = selectedValues.join(' ');
+                })
+
+            </script>
+</body>
+</html>
