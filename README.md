@@ -29,8 +29,8 @@ This project focuses on predicting apartment prices using a hybrid regression te
 3. Run the load_models file:
 
     ```bash
-    jupyter nbconvert --to script your_notebook.ipynb
-    python your_notebook.py
+    jupyter nbconvert --to script load_models.ipynb
+    python load_models.py
 
 4. Navigate to the Web Application Folder:
 
