@@ -4,7 +4,7 @@
 
 This project focuses on predicting apartment prices using a hybrid regression technique. The methodology involves the synergistic combination of Gradient Boosting and Random Forest algorithms through a Stacking Regressor, with Lasso as the final estimator. Additionally, cosine similarity is incorporated for personalized recommendations.
 
-## Archeticture
+## Architecture
 
 ![Alt Text](/images/ml.PNG)
 
