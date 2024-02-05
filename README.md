@@ -16,6 +16,32 @@ This project focuses on predicting apartment prices using a hybrid regression te
 - Python 3.11.0
 - Libraries: NumPy, Pandas, Scikit-learn,matplotlib, BeautifulSoup, Selenium, FLask
 
+### Installation
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/MdRiBen/ApartementPricePredictionInMorocco.git
+
+2. Navigate to the Processing Folder:
+    ```bash
+    cd ApartementPricePredictionInMorocco/processing
+
+3. Run the load_models file:
+
+    ```bash
+    jupyter nbconvert --to script your_notebook.ipynb
+    python your_notebook.py
+
+4. Navigate to the Web Application Folder:
+
+    ```bash
+    cd ../webApplication
+
+5. run the application:
+    ```bash
+    python app.py
+
+
 ## Usage
 
 1. Collect data from the website using Selenium and BeautifulSoup.
@@ -28,4 +54,5 @@ This project focuses on predicting apartment prices using a hybrid regression te
 
 5. Optimize the model using GridSearchCV and create a Hybrid Regression model.
 
-6. Demonstrate model predictions and recommendations using cosine similarity. 
+6. Demonstrate model predictions and recommendations using cosine similarity.
+
