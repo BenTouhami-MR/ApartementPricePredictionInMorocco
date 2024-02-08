@@ -4,9 +4,9 @@ import pickle
 from sklearn.metrics.pairwise import cosine_similarity
 import re,os 
 
-root_path=os.getcwd()
+root_path=os.getcwd().replace('\webApplication','')
+print(root_path)
 app = Flask(__name__,template_folder='template')
-
 Model_path = root_path+"\\Models\\Stacking.pkl"
 df_and_vec_path=root_path+"\\transformers"
 
@@ -65,11 +65,11 @@ def prepare_data_for_prediction(df):
     df['Description'] = (df['etat'].fillna('') +" " +df['etage'].fillna('') +" "+
                     " "+ df['ans'].fillna('') +" "+ df['ville'].fillna('') +" "+
                         df['autre'].fillna('')).str.replace('  ',' ').str.replace('nan','').str.lower().str.strip()
-   
+
     v=df['Description']
     pd.set_option('display.max_columns', None)
-    
-    ##--apply TF-IDF on the appartment we want to predict the price 
+
+    ##--apply TF-IDF on the appartment we want to predict the price
     X =vectorize.transform(v)
     X_tfidf_pred =pd.DataFrame(X.toarray(),columns=vectorize.get_feature_names_out())
     numeric_cols_pred =prediction[list(numerica_cols)]
@@ -86,7 +86,7 @@ def calculate_similarity(df,to_predict):
     df_test['similarity'] = similarities
     index = df_test['similarity'].idxmax()
     similar_apartment = appartements.loc[index]
-    
+
     return similar_apartment['lienImage'],similar_apartment['lienArticle'],similar_apartment['prix(DHs)']
 
 
@@ -118,11 +118,11 @@ def predict():
     predicted_price = stacking_model.predict(to_predict)
 
     to_predict['prix(DHs)']=predicted_price
- 
+
     # Print the result
     similar_apartment_link,sim_artc,price = calculate_similarity(df, to_predict)
 
-    return render_template('index.html', Article_link=sim_artc, prediction=predicted_price[0] ,price=price, similar_apartment_link=similar_apartment_link)
-    
+    return render_template('index.html', Article_link=sim_artc, prediction=int(predicted_price[0]) ,price=price, similar_apartment_link=similar_apartment_link)
+
 if __name__ == '__main__':
     app.run(debug=True)

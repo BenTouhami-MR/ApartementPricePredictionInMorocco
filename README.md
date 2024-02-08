@@ -56,3 +56,4 @@ This project focuses on predicting apartment prices using a hybrid regression te
 
 6. Demonstrate model predictions and recommendations using cosine similarity.
 
+-
