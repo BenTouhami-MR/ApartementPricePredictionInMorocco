@@ -35,22 +35,24 @@ This project focuses on predicting apartment prices using a hybrid regression te
    ```bash
    git clone https://github.com/MdRiBen/ApartementPricePredictionInMorocco.git
 
-2. Navigate to the Processing Folder:
+2. Create a folder named: ApartmentPricePredictionInMorocco/Models.
+    
+3. Navigate to the Processing Folder:
     ```bash
     cd ApartementPricePredictionInMorocco/processing
 
-3. Run the load_models file:
+4. Run the load_models file:
 
     ```bash
     jupyter nbconvert --to script load_models.ipynb
     python load_models.py
 
-4. Navigate to the Web Application Folder:
+5. Navigate to the Web Application Folder:
 
     ```bash
     cd ../webApplication
 
-5. run the application:
+6. run the application:
     ```bash
     python app.py
 
