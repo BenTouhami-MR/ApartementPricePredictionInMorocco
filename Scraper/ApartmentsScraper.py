@@ -44,10 +44,6 @@ for num_page in range(1,500):
 
 
 
-
-
-
-
     comp=1
     for card in cards:
         try:
@@ -56,6 +52,8 @@ for num_page in range(1,500):
         except:
             imagelink='https://www.mubawab-media.com/assets/common/no-photo/m/no-photo.jpg'
         imagesLinks.append(imagelink)
+
+        
         try:
             print(str(comp)+"/"+str(len(cards))+"|"+str(num_page))
             comp+=1

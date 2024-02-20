@@ -33,7 +33,7 @@ appartements = pd.concat([data1, data2], axis=0, ignore_index=True)
 
 
 
-# Function to prepare data for prediction
+#------------------------- Function to prepare data for prediction
 def prepare_data_for_prediction(df):
     prediction=df
 
@@ -79,15 +79,8 @@ def prepare_data_for_prediction(df):
 
 
 
-#--Function to calculate similarity
-def calculate_similarity(df,to_predict):
-    df_test=df.copy()
-    similarities = cosine_similarity(df_test, to_predict)
-    df_test['similarity'] = similarities
-    index = df_test['similarity'].idxmax()
-    similar_apartment = appartements.loc[index]
 
-    return similar_apartment['lienImage'],similar_apartment['lienArticle'],similar_apartment['prix(DHs)']
+
 
 
 #--Flask route for the home page
@@ -109,7 +102,15 @@ def predict():
     data_dict['chambres']=int(data_dict['chambres'])
     data_dict['pieces']=int(data_dict['pieces'])
     data_dict['salles de bains']=int(data_dict['salles de bains'])
-    data_dict['etage']=data_dict['etage']+"etage"
+    data_dict['etage'] = data_dict['etage']+"etage"
+
+    print(data_dict['ville'])
+
+    # ----- return reqiured city
+    def getrequiredCity():
+          return  data_dict['ville'].lower()
+    
+
 
     to_predict=pd.DataFrame.from_dict(data_dict, orient='index').T
 
@@ -119,10 +120,50 @@ def predict():
 
     to_predict['prix(DHs)']=predicted_price
 
-    # Print the result
-    similar_apartment_link,sim_artc,price = calculate_similarity(df, to_predict)
 
-    return render_template('index.html', Article_link=sim_artc, prediction=int(predicted_price[0]) ,price=price, similar_apartment_link=similar_apartment_link)
+    #--Function to calculate similarity
+
+    def calculate_similarity(df,to_predict):
+
+        city =getrequiredCity()
+        print(city)
+        df_test=df[df[city]!= 0]
+        similarities = cosine_similarity(df_test, to_predict)
+        df_test['similarity'] = similarities
+
+
+        index = df_test['similarity'].idxmax()
+        similar_apartment = appartements.loc[index]
+
+
+        for index in df_test['similarity'].sort_values(ascending=False).index[:2000]:
+              
+            similar_apartment = appartements.loc[index]         
+                
+            predected_price = to_predict['prix(DHs)'].values[0]
+
+
+            print("=================="+ similar_apartment['prix(DHs)'])
+
+
+            recommanded_price = float(similar_apartment['prix(DHs)'].replace(' DH','').replace(' EUR',''))
+
+            price_difference = (abs(predected_price - recommanded_price))<150000
+
+
+
+            if price_difference:
+
+                return similar_apartment['lienImage'],similar_apartment['lienArticle'],similar_apartment['prix(DHs)'], price_difference
+                # print(f"you can visit recommended apartment from this link:\n{similare_att['prix(DHs)'].iloc[0]}")
+                # print("====================================================")
+                # break
+    
+
+        # Print the result
+    similar_apartment_link,sim_artc,price,price_difference = calculate_similarity(df, to_predict)
+
+    return render_template('index.html', Article_link=sim_artc, prediction=int(predicted_price[0]) ,price=price, similar_apartment_link=similar_apartment_link,price_avialable = (price_difference) )
 
 if __name__ == '__main__':
     app.run(debug=True)

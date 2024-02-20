@@ -85,7 +85,7 @@ class Preprocessing:
 
     ## we gonna collect all categorical data in one variable called description to apply text_mining on this feature  
 
-    def Feature_Engeneering(self,df):
+    def Feature_Engineering(self,df):
         numerica_cols =df.select_dtypes('float')
 
         df['Description'] = (df['etat'].fillna('') +" " +df['etage'].fillna('') +" "+
@@ -127,7 +127,7 @@ class Preprocessing:
         numerica_cols =df.select_dtypes('float')
 
         df = self.data_imputer(df)
-        df =self.Feature_Engeneering(df)
+        df =self.Feature_Engineering(df)
         df,vectorize= self.textMining(df,numerica_cols)
         X=df.drop('prix(DHs)',axis=1)
         y=df['prix(DHs)']

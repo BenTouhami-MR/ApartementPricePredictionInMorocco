@@ -7,10 +7,9 @@
     <title>Apartment Price Prediction</title>
 </head>
 <body>
-    <nav>
 
-    </nav>
     <div class="work">
+       
         <div class="container">
             <h1>Apartment Price Prediction</h1>
             <form action="/predict" method="post">
@@ -58,7 +57,6 @@
                     <option value="Marrakech">Marrakech</option>
                     <option value="Tanger">Tanger</option>
                     <option value="Casablanca">Casablanca</option>
-                    <option value="Al Hoceima">Al Hoceima</option>
                     <option value="Agadir">Agadir</option>
                     <option value="Ahfir">Ahfir</option>
                     <option value="Oujda">Oujda</option>
@@ -100,19 +98,23 @@
    <div class="result-card">
        <h2>Prediction Result</h2>
        <p>predicted price is approximately: <b><p style="color: #ff6600;">{{ prediction }} DHs</p></b></p>
-       <p>You can visit a similar apartment:</p>
        
+       {% if price_avialable %}
+       <p>You can visit a similar apartment:</p>
        <a href="{{Article_link}}">
            <div class="recommendation-card">
                <img src="{{similar_apartment_link}}" alt="Recommended House" class='img'>
                <p style="color:#ff6600"><b>{{price}}s</b></p>
            </div>
        </a>
+       {% else %}
+        <p> Sorry, I cannot provide any recommendations similar to your requirements </p>
+    {% endif %}
 
    </div>
+    </div>
+
 </div>
-
-
 {% endif %}
 
             <script>
@@ -121,12 +123,12 @@
                 const selectedFeatureInput = document.getElementById('selectedFeatureInput');
 
                 selectElement.addEventListener("change",(event) =>{
-                    
+
                     //convert to Array
                     const selectedOptionsArray =Array.from(selectElement.selectedOptions);
                     selectListElement.innerHTML='';
 
-                    
+
                     let selectedValues = [];
 
                     selectedOptionsArray.forEach((option) =>{
