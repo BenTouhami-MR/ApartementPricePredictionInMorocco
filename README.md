@@ -1,4 +1,4 @@
-# Apartement Prices Prediction Project
+# Apartment Prices Prediction Project
 
 ## Overview
 
